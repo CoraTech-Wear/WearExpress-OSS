@@ -9,6 +9,7 @@
 <script>
 import router from "@system.router";
 import prompt from "@system.prompt";
+import { getExpressInfo } from "../../ExpressKit/express";
 
 export default {
   // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
@@ -27,16 +28,20 @@ export default {
       uri: "/pages/detail"
     })
   },
-  getExpressInfo(){
-    const result = this.getExpressInfo({
-      com: 'shunfeng',
-      num: "SF0281401042898",
-      phone: '17723641985'
-    });
-    console.log(result)
-    prompt.showToast({
-      message: JSON.stringify(result)
-    })
+  // 修改后的核心代码片段
+  getExpressInfo: async function() {
+      // try {
+          const result = await getExpressInfo({
+              com: 'shunfeng',
+              num: "SF0281401042898",
+              phone: '17723641985'
+          });
+          
+      // } catch (error) {
+      //     prompt.showToast({
+      //         message: error.message
+      //     });
+      // }
   }
 }
 </script>
