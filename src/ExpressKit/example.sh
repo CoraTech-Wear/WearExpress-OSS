@@ -1,0 +1,3 @@
+curl -i -k -X POST 'https://kdapi.kuaidi100.com/test/poll/channelquery.do?param=%7B%22com%22%3A%22jd%22%2C%22num%22%3A%22JDVC13337208715%22%2C%22from%22%3A%22%22%2C%22phone%22%3A%22%22%2C%22to%22%3A%22%22%2C%22resultv2%22%3A4%2C%22show%22%3A%220%22%2C%22order%22%3A%22desc%22%7D'  -H 'Authorization:APPCODE 你自己的AppCode' --data '{"com":"jd","num":"JDVC13337208715","from":"","phone":"","to":"","resultv2":4,"show":"0","order":"desc"}' -H 'Content-Type:application/json; charset=UTF-8'
+
+//根据API的要求，定义相对应的Content-Type

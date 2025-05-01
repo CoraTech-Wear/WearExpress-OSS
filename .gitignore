@@ -1,0 +1,10 @@
+/.nyc_output
+/coverage
+/node_modules
+/sign
+/dist
+/build
+.husky/
+
+./src/ExpressKit/example.json
+src/ExpressKit/example.json
