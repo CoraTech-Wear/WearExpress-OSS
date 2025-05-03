@@ -2,7 +2,9 @@
   <div class="demo-page">
     <text class="title">{{ $t("a.b") }},欢迎打开{{ title }}</text>
     <!-- 点击跳转详情页 -->
-    <input class="btn" type="button" value="获取" onclick="getExpressInfo" />
+    <input class="btn" type="button" value="获取" onclick="getExpress" />
+    <text class="loading" if="loading">加载中...</text>
+    <text class="result" if="result">{{ result }}</text>
   </div>
 </template>
 
@@ -14,7 +16,9 @@ import { getExpressInfo } from "../../ExpressKit/express";
 export default {
   // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
   private: {
-    title: "示例页面"
+    title: "示例页面",
+    loading: false,
+    result: ""
   },
   onInit(){
     prompt.showToast({
@@ -29,19 +33,22 @@ export default {
     })
   },
   // 修改后的核心代码片段
-  getExpressInfo: async function() {
-      // try {
-          const result = await getExpressInfo({
-              com: 'shunfeng',
-              num: "SF0281401042898",
-              phone: '17723641985'
-          });
-          
-      // } catch (error) {
-      //     prompt.showToast({
-      //         message: error.message
-      //     });
-      // }
+  getExpress: async function() {
+    this.loading = true;
+    try {
+      const result = await getExpressInfo({
+          com: 'shunfeng',
+          num: "SF0281401042898",
+          phone: '17723641985'
+      });
+      this.result = JSON.stringify(result);
+    } catch (error) {
+        prompt.showToast({
+            message: `获取快递信息失败：${error.message}`
+        });
+    } finally {
+      this.loading = false;
+    }
   }
 }
 </script>
@@ -66,5 +73,14 @@ export default {
   background-color: #09ba07;
   font-size: 20px;
   color: #ffffff;
+}
+
+.loading {
+  margin-top: 20px;
+  color: red;
+}
+
+.result {
+  margin-top: 20px;
 }
 </style>

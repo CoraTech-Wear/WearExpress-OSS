@@ -1,0 +1,70 @@
+<template>
+  <div id="Home">
+    <image src="../../common/Images/Home/background.png" id="bgImage"></image>
+    <div class="TitleBar">
+      <text class="time">{{ currentTime }}</text>
+      <text class="titleText">WearExpress</text>
+    </div>
+    <scroll class="Content" scroll-y="true" bounces="true">
+      <div class="Query">
+        <text class="querytext1">输入运单号查询</text>
+        <div class="numInputArea">
+          <image src="../../common/Images/Home/input.png" class="numInputbg"></image>
+        </div>
+      </div>
+    </scroll>
+  </div>
+</template>
+
+<script>
+import { updateTime } from "../../common/commons";
+import file from "@system.file";
+export default {
+  private: {
+    currentTime: ""
+  },
+  onInit() {
+    this.updateTime()
+    setInterval(() => {
+      this.updateTime()
+    })
+  },
+  updateTime() {
+    this.currentTime = updateTime()
+  },
+  queryExpress(num) {
+    
+  }
+}
+</script>
+
+<style lang="less">
+@import url(./home.less);
+.TitleBar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 466px;
+  height: 87px;
+}
+.time {
+  position: absolute;
+  top: 5px;
+  width: 466px;
+  color: #f6f6f6;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+.titleText {
+  position: absolute;
+  top: 45px;
+  width: 466px;
+  color: #fff;
+  text-align: center;
+  font-family: MiSans;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: blod;
+}
+</style>

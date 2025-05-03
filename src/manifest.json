@@ -27,8 +27,11 @@
     "designWidth": 466
   },
   "router": {
-    "entry": "pages/index",
+    "entry": "pages/home",
     "pages": {
+      "pages/home": {
+        "component": "home"
+      },
       "pages/index": {
         "component": "index"
       },

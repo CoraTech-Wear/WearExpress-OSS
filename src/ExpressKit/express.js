@@ -1,8 +1,9 @@
 import fetch from "@system.fetch";
 import config from "./config";
 import prompt from "@system.prompt";
+import stateref from './refs';
 
-export async function getExpressInfo({
+async function getExpressInfo({
     com,
     num,
     phone="",
@@ -37,31 +38,70 @@ export async function getExpressInfo({
     .replace('{phone}', phone)
     .replace('{to}', to)
     .replace('{resultv2}', config.resultv2)
-    .replace('{show}', show)
+    .replace('{show}', "0")
     .replace('{order}', order);
     const url = "https://kdapi.kuaidi100.com/test/poll/channelquery.do?" + queryStr;
-    const result = {};
-    await fetch.fetch({
-        url: url,
-        method: 'POST',
-        header: Header,
-        data: Data,
-        responseType: 'json',
-        success: function(response) {
-            console.log(`Response code: ${response.code}`);
-            console.log(`Response data: ${JSON.stringify(response.data)}`)
-            result = response.data;
-            if(response.code === 200){
-                prompt.showToast({
-                    message: response.data,
-                    duration: 1000
-                })
+    return new Promise((resolve, reject) => {
+        fetch.fetch({
+            url: url,
+            method: 'POST',
+            header: Header,
+            data: Data,
+            responseType: 'json',
+            success: (response) => {
+                console.log(`Response code: ${response.code}`);
+                if (response.code === 200) {
+                    prompt.showToast({
+                        message: '查询成功',
+                        duration: 1000
+                    });
+                    resolve(response.data);
+                } else {
+                    reject(new Error(`请求失败: ${response.data}`));
+                }
+            },
+            fail: (data, code) => {
+                console.log(`handling fail, errMsg = ${data}`);
+                reject(new Error(`网络错误: ${code}`));
             }
-        },
-        fail: function(data, code) {
-            console.log(`handling fail, errMsg = ${data}`)
-            console.log(`handling fail, errCode = ${code}`)
-        }
-    })
-    return result;
+        });
+    });
+}
+
+export class ExpressInfo{
+    constructor({com, num, phone="", from="", to="", order="desc"}){
+        this.com = com;
+        this.num = num;
+        this.phone = phone;
+        this.from = from;
+        this.to = to;
+        this.order = order;
+        this.data = null;
+    };
+    async getExpressInfo(){
+        this.data =  await getExpressInfo({
+            com: this.com, 
+            num: this.num, 
+            phone: this.phone, 
+            from: this.from, 
+            to: this.to, 
+            order: this.order
+        });
+        return true;
+    };
+    getExpressComName(){
+        return stateref.expressCom[this.data.com];
+    };
+    isExpressChecked(){
+        return this.data.isCheck === "1";
+    };
+    getExpressNum(){
+        return this.data.nu;
+    };
+    getExpressState(){
+        return stateref.expressState[this.data.state];
+    };
+    getLogisticsTracking(){
+        return this.data.data;
+    }
 }
