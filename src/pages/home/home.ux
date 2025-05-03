@@ -1,3 +1,4 @@
+<import name="input-method" src="../../components/InputMethod/InputMethod.ux"></import>
 <template>
   <div id="Home">
     <image src="../../common/Images/Home/background.png" class="bgImage"></image>
@@ -9,14 +10,24 @@
       <div class="Query">
         <text class="querytext1">输入运单号查询</text>
         <div class="numInputArea">
-          <image src="../../common/Images/Home/input.png" class="numInputbg"></image>
-          <text class="numInputText">
-            {{ CurrentNum}}
+          <image src="../../common/Images/Home/input.png" class="numInputbg" @click="showHideKeyboard"></image>
+          <text class="numInputText" @click="showHideKeyboard">
+            {{ CurrentNum }}
           </text>
           <image src="../../common/Images/Home/query.png" class="queryBtn" onclick="queryExpress()"></image>
         </div>
       </div>
     </scroll>
+    <text if="{{!keyboardHide}}" style="position: absolute;top: 0;height:145px;width:100%;text-align:center;color: #fff;font-size: 32px;font-weight: bold;background-color: #282828;">{{ CurrentNum }}_</text>
+    <input-method
+      hide="{{keyboardHide}}"
+      keyboardtype="QWERTY"
+      maxlength="5"
+      screentype="circle"
+      @delete="deleteCurrentNum"
+      @complete="complete"
+    ></input-method>
+    <text style="position: absolute;top: 145px;right: 40px;color: #fff;font-size: 24px;" if="{{!keyboardHide}}" onclick="showHideKeyboard">收起</text>
   </div>
 </template>
 
@@ -33,6 +44,7 @@ export default {
     queryHistory: undefined,
     historyData: [],
     CurrentNum: "SF0281401042898", //当前输入的运单号
+    keyboardHide: true,
   },
   onInit() {
     this.updateTime();
@@ -65,6 +77,17 @@ export default {
         params: { num: this.CurrentNum } //将当前输入的运单号传递给detail页面
       })
     }
+  },
+  deleteCurrentNum() {
+    this.CurrentNum = this.CurrentNum.slice(0, -1);
+    console.log("删除字符");
+  },
+  complete(evt) {
+    this.CurrentNum += evt.detail.content;
+    console.log("onComplete:"+JSON.stringify(evt));
+  },
+  showHideKeyboard() {
+    this.keyboardHide = !this.keyboardHide;
   }
 }
 </script>
