@@ -1,26 +1,42 @@
 <template>
-  <div class="demo-page">
-    <text class="title">{{ text }}</text>
+  <div class="Detail">
+    <image src="{{ bgImage }}" class=""></image>
+    <div class="TitleBar">
+      <text class="time">{{ currentTime }}</text>
+      <text class="titleText">物流详情</text>
+    </div>
+    <scroll class="Content" scroll-y="true" bounces="true">
+      <text>{{ num }}</text>
+    </scroll>
   </div>
 </template>
 
 <script>
+import { updateTime } from "../../common/commons";
 export default {
   private: {
-    text: "欢迎打开详情页"
-  }
+    text: "欢迎打开详情页",
+    bgImage: "../../common/Images/Detail/bg.unchecked.png",
+    com: "",
+    state: "",
+    currentTime: "",
+  },
+  protected:{
+    num: ""
+  },
+  onInit() {
+    this.updateTime();
+    setInterval(() => {
+      this.updateTime()
+    });
+  },
+  updateTime() {
+    this.currentTime = updateTime()
+  },
 }
 </script>
 
-<style>
-.demo-page {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.title {
-  font-size: 20px;
-  text-align: center;
-}
+<style lang="less">
+@import url(./detail.less);
+@import url(../../common/common.less);
 </style>

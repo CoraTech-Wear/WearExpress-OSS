@@ -2,6 +2,7 @@ import fetch from "@system.fetch";
 import config from "./config";
 import prompt from "@system.prompt";
 import stateref from './refs';
+import storage from '@system.storage';
 
 async function getExpressInfo({
     com,
@@ -69,7 +70,7 @@ async function getExpressInfo({
 }
 
 export class ExpressInfo{
-    constructor({com, num, phone="", from="", to="", order="desc"}){
+    constructor({com="", num, phone="", from="", to="", order="desc"}){
         this.com = com;
         this.num = num;
         this.phone = phone;
@@ -104,4 +105,52 @@ export class ExpressInfo{
     getLogisticsTracking(){
         return this.data.data;
     }
+}
+
+export class QueryHistory{
+    constructor(){
+        this.historyData = [];
+    };
+    loadHistoryData(){
+        storage.get({
+            key: 'historyData',
+            default: '[]',
+            success: (data) => {
+                this.historyData = JSON.parse(data);
+            },
+            fail: (data, code) => {
+                console.log(`handling fail, errMsg = ${data}`);
+                prompt.showToast({
+                    message: '读取历史查询记录失败'+data+code,
+                    duration: 1000
+                })
+            }
+        });
+    };
+    saveHistoryData(){
+        prompt.showToast({
+            message: JSON.stringify(this.historyData),
+            duration: 2000
+        })
+        storage.set({
+            key: 'historyData',
+            value: JSON.stringify(this.historyData),
+            success: () => {
+                console.log('保存成功');
+            },
+            fail: (data, code) => {
+                prompt.showToast({
+                    message: '保存历史查询记录失败,'+data+code,
+                    duration: 1000
+                })
+            }
+        })
+    };
+    addHistoryData ({num}){
+        this.historyData.unshift(num);
+        this.saveHistoryData();
+    };
+    getHistoryData(){
+        return this.historyData;
+    };
 }

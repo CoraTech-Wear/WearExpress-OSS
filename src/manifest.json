@@ -20,6 +20,9 @@
     },
     {
       "name": "system.prompt"
+    },
+    {
+      "name": "system.storage"
     }
   ],
   "config": {

@@ -1,6 +1,6 @@
 <template>
   <div id="Home">
-    <image src="../../common/Images/Home/background.png" id="bgImage"></image>
+    <image src="../../common/Images/Home/background.png" class="bgImage"></image>
     <div class="TitleBar">
       <text class="time">{{ currentTime }}</text>
       <text class="titleText">WearExpress</text>
@@ -10,6 +10,10 @@
         <text class="querytext1">输入运单号查询</text>
         <div class="numInputArea">
           <image src="../../common/Images/Home/input.png" class="numInputbg"></image>
+          <text class="numInputText">
+            {{ CurrentNum}}
+          </text>
+          <image src="../../common/Images/Home/query.png" class="queryBtn" onclick="queryExpress()"></image>
         </div>
       </div>
     </scroll>
@@ -18,53 +22,58 @@
 
 <script>
 import { updateTime } from "../../common/commons";
-import file from "@system.file";
+import router from "@system.router";
+import storage from "@system.storage";
+import prompt from "@system.prompt";
+import { QueryHistory } from "../../ExpressKit/express";
+
 export default {
   private: {
-    currentTime: ""
+    currentTime: "",
+    queryHistory: undefined,
+    historyData: [],
+    CurrentNum: "SF0281401042898", //当前输入的运单号
   },
   onInit() {
-    this.updateTime()
+    this.updateTime();
     setInterval(() => {
       this.updateTime()
+    });
+    storage.get({
+      key: "phoneNum",
+      default: ""
+    });
+    this.queryHistory = new QueryHistory();
+    this.queryHistory.loadHistoryData();
+    this.historyData = this.queryHistory.getHistoryData();
+    prompt.showToast({
+      message: this.historyData,
+      duration: 3000
     })
   },
   updateTime() {
     this.currentTime = updateTime()
   },
-  queryExpress(num) {
-    
+  queryExpress() {
+    if (this.CurrentNum === "") { //如果输入框为空
+      prompt.showToast({
+        message: "请输入运单号",
+        duration: 3000
+      })
+    } else { //如果输入框不为空
+      this.queryHistory.addHistoryData({
+        num: this.CurrentNum,
+      })
+      router.replace({
+        uri: "pages/detail",
+        params: { num: this.CurrentNum } //将当前输入的运单号传递给detail页面
+      })
+    }
   }
 }
 </script>
 
 <style lang="less">
 @import url(./home.less);
-.TitleBar {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 466px;
-  height: 87px;
-}
-.time {
-  position: absolute;
-  top: 5px;
-  width: 466px;
-  color: #f6f6f6;
-  text-align: center;
-  font-size: 30px;
-  font-weight: bold;
-}
-.titleText {
-  position: absolute;
-  top: 45px;
-  width: 466px;
-  color: #fff;
-  text-align: center;
-  font-family: MiSans;
-  font-size: 28px;
-  font-style: normal;
-  font-weight: blod;
-}
+@import url(../../common/common.less);
 </style>
