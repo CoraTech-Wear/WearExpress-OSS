@@ -42,6 +42,8 @@ async function getExpressInfo({
     .replace('{show}', "0")
     .replace('{order}', order);
     const url = "https://kdapi.kuaidi100.com/test/poll/channelquery.do?" + queryStr;
+    console.log('快递查询请求参数:', { com, num, phone });
+    console.log('完整请求URL:', url);
     return new Promise((resolve, reject) => {
         fetch.fetch({
             url: url,
@@ -52,8 +54,9 @@ async function getExpressInfo({
             success: (response) => {
                 console.log(`Response code: ${response.code}`);
                 if (response.code === 200) {
+                    console.log('快递查询响应数据:', response.data);
                     prompt.showToast({
-                        message: '查询成功',
+                        message: '查询成功'+response.data.state,
                         duration: 1000
                     });
                     resolve(response.data);

@@ -6,13 +6,16 @@
       <text class="titleText">物流详情</text>
     </div>
     <scroll class="Content" scroll-y="true" bounces="true">
-      <text>{{ num }}</text>
+      <text >{{ com }}</text>
+      <text>{{ state }}</text>
     </scroll>
   </div>
 </template>
 
 <script>
-import { updateTime } from "../../common/commons";
+import {updateTime} from "../../common/commons"
+import {ExpressInfo} from "../../ExpressKit/express"
+import storage from "@system.storage"
 export default {
   private: {
     text: "欢迎打开详情页",
@@ -20,19 +23,56 @@ export default {
     com: "",
     state: "",
     currentTime: "",
+    trackingInfo: [],
+    phone: "",
+    loading: true
   },
-  protected:{
+  protected: {
     num: ""
   },
   onInit() {
-    this.updateTime();
+    this.updateTime()
     setInterval(() => {
       this.updateTime()
-    });
+    })
+    storage.get({
+      key: "phoneNum",
+      default: "",
+      success: (data) => {
+        this.phone = data
+        
+        const expressInfo = new ExpressInfo({
+          num: this.num,
+          phone: this.phone
+        })
+        expressInfo.getExpressInfo().then(() => {
+          return Promise.all([
+            expressInfo.getExpressComName().then((com) => {
+              this.com = com
+            }).catch(error => {
+              console.error('获取快递公司失败:', error)
+            }),
+            expressInfo.getExpressInfo().then((data) => {
+              this.trackingInfo = data
+            }),
+            expressInfo.getExpressState().then((state) => {
+              this.state = state
+            }).catch(error => {
+              console.error('获取物流状态失败:', error)
+            })
+          ])
+        }).then(() => {
+          this.loading = false
+        }).catch(error => {
+          console.error('获取物流信息失败:', error)
+          this.loading = false
+        })
+      }
+    })
   },
   updateTime() {
     this.currentTime = updateTime()
-  },
+  }
 }
 </script>
 

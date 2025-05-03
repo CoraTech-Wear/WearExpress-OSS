@@ -39,10 +39,6 @@ export default {
     setInterval(() => {
       this.updateTime()
     });
-    storage.get({
-      key: "phoneNum",
-      default: ""
-    });
     this.queryHistory = new QueryHistory();
     this.queryHistory.loadHistoryData();
     this.historyData = this.queryHistory.getHistoryData();
