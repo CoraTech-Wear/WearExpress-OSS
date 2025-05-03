@@ -1,6 +1,6 @@
 <template>
-  <div class="Detail">
-    <image src="{{ bgImage }}" class=""></image>
+  <div class="Detail" @click="changeBgImage">
+    <image src="/common/Images/Detail/{{ bgImage }}.png" style="position: absolute;top: 0;left: 0;"></image>
     <div class="TitleBar">
       <text class="time">{{ currentTime }}</text>
       <text class="titleText">物流详情</text>
@@ -19,7 +19,7 @@ import storage from "@system.storage"
 export default {
   private: {
     text: "欢迎打开详情页",
-    bgImage: "../../common/Images/Detail/bg.unchecked.png",
+    bgImage: "bg.unchecked",
     com: "",
     state: "",
     currentTime: "",
@@ -72,6 +72,9 @@ export default {
   },
   updateTime() {
     this.currentTime = updateTime()
+  },
+  changeBgImage() {
+    this.bgImage = this.bgImage === "bg.unchecked"? "bg.checked" : "bg.unchecked"
   }
 }
 </script>
