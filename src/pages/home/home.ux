@@ -23,7 +23,7 @@
       hide="{{keyboardHide}}"
       keyboardtype="QWERTY"
       maxlength="5"
-      screentype="circle"
+      screentype="{{screenShape}}"
       @delete="deleteCurrentNum"
       @complete="complete"
     ></input-method>
@@ -34,7 +34,7 @@
 <script>
 import { updateTime } from "../../common/commons";
 import router from "@system.router";
-import storage from "@system.storage";
+import device from '@system.device';
 import prompt from "@system.prompt";
 import { QueryHistory } from "../../ExpressKit/express";
 
@@ -45,12 +45,19 @@ export default {
     historyData: [],
     CurrentNum: "SF0281401042898", //当前输入的运单号
     keyboardHide: true,
+    screenShape: "rect"
   },
   onInit() {
     this.updateTime();
     setInterval(() => {
       this.updateTime()
     });
+    device.getInfo({
+      success: (data) => {
+        console.log("device info: " + JSON.stringify(data));
+        this.screenShape = data.screenShape;
+      }
+    })
     this.queryHistory = new QueryHistory();
     this.queryHistory.loadHistoryData();
     this.historyData = this.queryHistory.getHistoryData();
