@@ -4,8 +4,8 @@ import prompt from "@system.prompt";
 import stateref from './refs';
 import storage from '@system.storage';
 
-async function getExpressInfo({
-    com,
+export async function getExpressInfo({
+    com="",
     num,
     phone="",
     from="",
@@ -73,25 +73,8 @@ async function getExpressInfo({
 }
 
 export class ExpressInfo{
-    constructor({com="", num, phone="", from="", to="", order="desc"}){
-        this.com = com;
-        this.num = num;
-        this.phone = phone;
-        this.from = from;
-        this.to = to;
-        this.order = order;
-        this.data = null;
-    };
-    async getExpressInfo(){
-        this.data =  await getExpressInfo({
-            com: this.com, 
-            num: this.num, 
-            phone: this.phone, 
-            from: this.from, 
-            to: this.to, 
-            order: this.order
-        });
-        return true;
+    constructor(data){
+        this.data = data;
     };
     getExpressComName(){
         return stateref.expressCom[this.data.com];

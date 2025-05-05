@@ -17,84 +17,106 @@
           <image src="../../common/Images/Home/query.png" class="queryBtn" onclick="queryExpress()"></image>
         </div>
       </div>
+      <div class="HistoryChip" for="{{(index, value) in this.historyData}}">
+
+        <text class="HistoryNum">{{ value }}</text>
+      </div>
     </scroll>
-    <text if="{{!keyboardHide}}" style="position: absolute;top: 0;height:145px;width:100%;text-align:center;color: #fff;font-size: 32px;font-weight: bold;background-color: #282828;">{{ CurrentNum }}_</text>
-    <input-method
-      hide="{{keyboardHide}}"
-      keyboardtype="QWERTY"
-      maxlength="5"
-      screentype="{{screenShape}}"
-      @delete="deleteCurrentNum"
-      @complete="complete"
-    ></input-method>
-    <text style="position: absolute;top: 145px;right: 40px;color: #fff;font-size: 24px;" if="{{!keyboardHide}}" onclick="showHideKeyboard">收起</text>
+    <text if="{{!keyboardHide}}" style="
+        position: absolute;
+        top: 0;
+        height: 145px;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-size: 32px;
+        font-weight: bold;
+        background-color: #282828;
+      ">
+      {{ CurrentNum }}_
+    </text>
+    <input-method hide="{{keyboardHide}}" keyboardtype="QWERTY" maxlength="5" screentype="{{screenShape}}"
+      @delete="deleteCurrentNum" @complete="complete"></input-method>
+    <text style="position: absolute; top: 145px; right: 40px; color: #fff; font-size: 24px" if="{{!keyboardHide}}"
+      onclick="showHideKeyboard">
+      收起
+    </text>
   </div>
 </template>
 
 <script>
-import { updateTime } from "../../common/commons";
-import router from "@system.router";
-import device from '@system.device';
-import prompt from "@system.prompt";
-import { QueryHistory } from "../../ExpressKit/express";
+import {updateTime} from "../../common/commons"
+import router from "@system.router"
+import device from "@system.device"
+import storage from "@system.storage"
+import prompt from "@system.prompt"
+import {QueryHistory} from "../../ExpressKit/express"
 
 export default {
   private: {
     currentTime: "",
-    queryHistory: undefined,
+    queryHistory: new QueryHistory(),
     historyData: [],
-    CurrentNum: "SF0281401042898", //当前输入的运单号
+    CurrentNum: "SF1982953801429", //当前输入的运单号
     keyboardHide: true,
-    screenShape: "rect"
+    screenShape: "rect",
+    phoneNum: ""
   },
   onInit() {
-    this.updateTime();
+    this.updateTime()
     setInterval(() => {
       this.updateTime()
-    });
+    })
     device.getInfo({
       success: (data) => {
-        console.log("device info: " + JSON.stringify(data));
-        this.screenShape = data.screenShape;
+        console.log("device info: " + JSON.stringify(data))
+        this.screenShape = data.screenShape
       }
     })
-    this.queryHistory = new QueryHistory();
-    this.queryHistory.loadHistoryData();
-    this.historyData = this.queryHistory.getHistoryData();
-    prompt.showToast({
-      message: this.historyData,
-      duration: 3000
-    })
+    storage
+      .get({
+        key: "phoneNum",
+        default: ""
+      })
+      .then((res) => {
+        console.log("phoneNum: " + res.data)
+        this.phoneNum = res.data
+      })
+    this.queryHistory.loadHistoryData()
+    this.historyData = this.queryHistory.getHistoryData()
+    
   },
   updateTime() {
     this.currentTime = updateTime()
   },
   queryExpress() {
-    if (this.CurrentNum === "") { //如果输入框为空
+    if (this.CurrentNum === "") {
+      //如果输入框为空
       prompt.showToast({
         message: "请输入运单号",
         duration: 3000
       })
-    } else { //如果输入框不为空
+    } else {
+      //如果输入框不为空
       this.queryHistory.addHistoryData({
-        num: this.CurrentNum,
+        num: this.CurrentNum
       })
       router.replace({
-        uri: "pages/detail",
-        params: { num: this.CurrentNum } //将当前输入的运单号传递给detail页面
+        uri: "pages/loadExpress",
+        params: {num: this.CurrentNum, phone: "17723641985"} //将当前输入的运单号传递给detail页面
       })
     }
   },
   deleteCurrentNum() {
-    this.CurrentNum = this.CurrentNum.slice(0, -1);
-    console.log("删除字符");
+    this.CurrentNum = this.CurrentNum.slice(0, -1)
+    console.log("删除字符")
   },
   complete(evt) {
-    this.CurrentNum += evt.detail.content;
-    console.log("onComplete:"+JSON.stringify(evt));
+    this.CurrentNum += evt.detail.content
+    console.log("onComplete:" + JSON.stringify(evt))
   },
   showHideKeyboard() {
-    this.keyboardHide = !this.keyboardHide;
+    this.keyboardHide = !this.keyboardHide
   }
 }
 </script>

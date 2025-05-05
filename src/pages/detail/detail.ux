@@ -22,59 +22,35 @@ export default {
     bgImage: "bg.unchecked",
     com: "",
     state: "",
+    result_: undefined,
     currentTime: "",
     trackingInfo: [],
     phone: "",
     loading: true
   },
   protected: {
-    num: ""
+    result: undefined,
   },
   onInit() {
     this.updateTime()
     setInterval(() => {
       this.updateTime()
     })
-    storage.get({
-      key: "phoneNum",
-      default: "",
-      success: (data) => {
-        this.phone = data
-        
-        const expressInfo = new ExpressInfo({
-          num: this.num,
-          phone: this.phone
-        })
-        expressInfo.getExpressInfo().then(() => {
-          return Promise.all([
-            expressInfo.getExpressComName().then((com) => {
-              this.com = com
-            }).catch(error => {
-              console.error('获取快递公司失败:', error)
-            }),
-            expressInfo.getExpressInfo().then((data) => {
-              this.trackingInfo = data
-            }),
-            expressInfo.getExpressState().then((state) => {
-              this.state = state
-            }).catch(error => {
-              console.error('获取物流状态失败:', error)
-            })
-          ])
-        }).then(() => {
-          this.loading = false
-        }).catch(error => {
-          console.error('获取物流信息失败:', error)
-          this.loading = false
-        })
-      }
-    })
+    this.result_ = JSON.parse(this.result);
+    if(this.result_.ischeck){
+      this.changeBgImage()
+    }
   },
   updateTime() {
     this.currentTime = updateTime()
   },
   changeBgImage() {
     this.bgImage = this.bgImage === "bg.unchecked"? "bg.checked" : "bg.unchecked"
+  },
+  returnHome() {
+    router.replace({
+      uri: "pages/home"
+    }) 
   }
 }
 </script>

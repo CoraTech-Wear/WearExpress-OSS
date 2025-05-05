@@ -1,0 +1,83 @@
+<template>
+  <div class="loading">
+    <!-- 点击跳转详情页 -->
+    <text class="stateText">{{ stateText }}</text>
+  </div>
+</template>
+
+<script>
+import router from "@system.router";
+import prompt from "@system.prompt";
+import { getExpressInfo } from "../../ExpressKit/express";
+
+export default {
+  // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+  private: {
+    loading: false,
+    result: "",
+    stateText: "加载中..."
+  },
+  protected: {
+    num: undefined,
+    phone: undefined
+  },
+  onInit(){
+    console.log('num', this.num);
+    this.getExpress()
+  },
+
+  routeDetail() {
+    // 跳转到应用内的某个页面，router用法详见：文档->接口->页面路由
+    router.push({
+      uri: "/pages/detail"
+    })
+  },
+  // 修改后的核心代码片段
+  getExpress: async function() {
+    this.loading = true;
+    try {
+      const result = await getExpressInfo({
+          num: this.num,
+          phone: this.phone
+      });
+      this.result = JSON.stringify(result);
+      router.replace({
+        uri: "pages/detail",
+        params: { result: this.result } // 将result作为参数传递给detail页面 
+      })
+    } catch (error) {
+        prompt.showToast({
+            message: `获取快递信息失败：${error.message}`
+        });
+        this.stateText = `获取快递信息失败：${error.message}`;
+    } finally {
+      this.loading = false;
+
+    }
+  }
+}
+</script>
+
+<style>
+.loading {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.title {
+  font-size: 20px;
+  text-align: center;
+}
+
+
+.stateText {
+  margin-top: 20px;
+  color: red;
+}
+
+.result {
+  margin-top: 20px;
+}
+</style>

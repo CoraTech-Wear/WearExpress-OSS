@@ -16,9 +16,6 @@
       "name": "system.fetch"
     },
     {
-      "name": "system.file"
-    },
-    {
       "name": "system.prompt"
     },
     {
@@ -41,11 +38,14 @@
       "pages/home": {
         "component": "home"
       },
-      "pages/index": {
+      "pages/debug": {
         "component": "index"
       },
       "pages/detail": {
         "component": "detail"
+      },
+      "pages/loadExpress": {
+        "component": "loadExpress"
       }
     }
   }
