@@ -1,12 +1,17 @@
 <template>
-  <div @swipe="returnHome">
+  <div  @swipe="returnHome">
     <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;"></image>
     <div class="TitleBar">
-      <text class="time">{{ currentTime }}</text>
-      <text class="titleText">关于</text>
+        <text class="time">{{ currentTime }}</text>
+        <text class="titleText">设置</text>
     </div>
     <scroll class="scroll" scroll-y="true" bounces="true">
-
+      <div class="btn">
+        <text class="btnText" @click="toPage('bindMobileNum')">绑定手机号</text>
+      </div>
+      <div class="btn">
+        <text class="btnText" @click="toPage('about')">关于</text>
+      </div>
 
     </scroll>
   </div>
@@ -32,10 +37,16 @@ export default {
     router.replace({
       uri: "pages/home"
     }) 
+  },
+  toPage(page) {
+    router.replace({
+      uri: `pages/${page}`
+    })
   }
 }
 </script>
 
 <style lang="less">
 @import url(../../common/common.less);
+@import url(./setting.less);
 </style>
