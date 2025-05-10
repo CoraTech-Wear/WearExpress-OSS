@@ -46,6 +46,9 @@
       },
       "pages/loadExpress": {
         "component": "loadExpress"
+      },
+      "pages/about": {
+        "component": "about"
       }
     }
   }
