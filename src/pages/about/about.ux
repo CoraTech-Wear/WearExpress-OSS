@@ -1,0 +1,41 @@
+<template>
+  <div class="Detail" @click="returnHome">
+    <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;"></image>
+    <scroll class="Content" scroll-y="true" bounces="true">
+      <div class="TitleBar">
+        <text class="time">{{ currentTime }}</text>
+        <text class="titleText">关于</text>
+      </div>
+
+
+    </scroll>
+  </div>
+</template>
+
+<script>
+import {updateTime} from "../../common/commons"
+
+export default {
+  private: {
+    currentTime: "",
+  },
+  onInit() {
+    this.updateTime()
+    setInterval(() => {
+      this.updateTime()
+    })
+  },
+  updateTime() {
+    this.currentTime = updateTime()
+  },
+  returnHome() {
+    router.replace({
+      uri: "pages/home"
+    }) 
+  }
+}
+</script>
+
+<style lang="less">
+@import url(../../common/common.less);
+</style>

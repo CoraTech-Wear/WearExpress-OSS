@@ -1,5 +1,5 @@
 <template>
-  <div class="Detail" @click="changeBgImage">
+  <div class="Detail" @swipe="returnHome">
     <image src="/common/Images/Detail/{{ bgImage }}.png" style="position: absolute;top: 0;left: 0;"></image>
     <div class="TitleBar">
       <text class="time">{{ currentTime }}</text>
@@ -16,6 +16,7 @@
 import {updateTime} from "../../common/commons"
 import {ExpressInfo} from "../../ExpressKit/express"
 import storage from "@system.storage"
+import router from "@system.router"
 export default {
   private: {
     text: "欢迎打开详情页",
@@ -47,10 +48,12 @@ export default {
   changeBgImage() {
     this.bgImage = this.bgImage === "bg.unchecked"? "bg.checked" : "bg.unchecked"
   },
-  returnHome() {
-    router.replace({
-      uri: "pages/home"
-    }) 
+  returnHome(e) {
+    if(e.direction=='right'){
+      router.replace({
+        uri: "pages/home"
+      })
+    }
   }
 }
 </script>

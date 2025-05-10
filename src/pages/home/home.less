@@ -7,8 +7,8 @@
     top: 97px;
     left: 0px;
     width: 466px;
-    bottom: 0; //不显示是因为没加这个(也可以用height)
-    overflow: hidden; //可以不加
+    bottom: 0;
+    overflow: hidden;
 }
 
 .bgImage {
@@ -31,10 +31,8 @@
     top: 10px;
     height: 27px;
     color: #FFF;
-    font-family: MiSans;
     font-size: 20px;
-    font-style: normal;
-    font-weight: 520;
+    font-weight: bold;
 }
 
 .numInputArea {
@@ -51,15 +49,38 @@
     top: 22px;
     height: 33px;
     color: #FFF;
-font-family: MiSans;
-font-size: 25px;
-font-style: normal;
-font-weight: 520;
-line-height: normal;
+    font-family: MiSans;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
 }
 
 .queryBtn {
     position: absolute;
     right: 9.2px;
     top: 16px;
+}
+.History {
+    position: absolute;
+    top:134px;
+    left: 34px;
+    display: flex;
+    width: 398px;
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+.historyTitle .HistoryNum{
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+}
+.HistoryChip {
+    width: 378px;
+    height: 75px;
+    border-radius: 20px;
+    background-color: rgba(30, 30, 30, 0.70);
+    margin-bottom: 10px;
 }
