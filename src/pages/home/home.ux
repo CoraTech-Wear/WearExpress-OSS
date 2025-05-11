@@ -80,8 +80,12 @@ export default {
       key: 'phoneNum',
       default: "",
       success: (res) => {
-        console.log("phoneNum: " + res.data)
-        this.phoneNum = res.data
+        if(res){
+          console.log("phoneNum: " + res.data)
+          this.phoneNum = res.data
+        }else{
+          prompt.showToast({message: "请先绑定手机号"})
+        }
       },
       fail:()=>{},
     });
@@ -120,10 +124,11 @@ export default {
   loadHistoryData() {
     storage.get({
       key: 'historyData',
-      default: '[]',
       success: (data) => {
-        this.historyData = JSON.parse(data);
-        console.log(this.historyData);
+        if(data){
+          this.historyData = JSON.parse(data);
+          console.log(this.historyData);
+        }
       },
       fail: (data, code) => {
         console.log(`handling fail, errMsg = ${data}`);

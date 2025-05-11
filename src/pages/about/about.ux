@@ -6,8 +6,7 @@
       <text class="titleText">关于</text>
     </div>
     <scroll class="scroll" scroll-y="true" bounces="true">
-
-
+      <image src="/common/Images/about/about.png"></image>
     </scroll>
   </div>
 </template>
@@ -38,4 +37,14 @@ export default {
 
 <style lang="less">
 @import url(../../common/common.less);
+.scroll {
+    position: absolute;
+    width: 426px;
+    left: 20px;
+    top: 97px;
+    bottom: 0;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 </style>
