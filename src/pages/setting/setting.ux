@@ -1,5 +1,5 @@
 <template>
-  <div  @swipe="returnHome">
+  <div  @swipe="returnHome" class="settings">
     <image src="/common/Images/about/bg.png" style="position: absolute;top: 0;left: 0;"></image>
     <div class="TitleBar">
         <text class="time">{{ currentTime }}</text>
@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import {updateTime} from "../../common/commons"
+import {updateTime} from "../../common/commons";
+import router from "@system.router";
 
 export default {
   private: {

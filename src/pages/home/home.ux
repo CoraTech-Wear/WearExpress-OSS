@@ -4,7 +4,7 @@
     <image src="../../common/Images/Home/background.png" class="bgImage"></image>
     <div class="TitleBar">
       <text class="time">{{ currentTime }}</text>
-      <text class="titleText">WearExpress</text>
+      <text class="titleText" @click="gotoSettings">WearExpress</text>
     </div>
     <scroll class="Content" scroll-y="true" bounces="true">
       <div class="Query">
@@ -20,8 +20,9 @@
       <div class="History">
         <text class="historyTitle">查询历史</text>
         <div class="HistoryChip" for="{{historyData}}">
-          <text class="HistoryNum">{{ $item.num }}</text>
-          <image src="../../common/Images/Home/del.png" style="position:absolute;top:21px;right:18px" onclick="deleteHistory($idx)"></image>
+          <text class="HistoryNum" @click="queryByHistory($item.num)">{{ $item.num }}</text>
+          <image src="../../common/Images/Home/del.png" style="position: absolute; top: 21px; right: 18px"
+            onclick="deleteHistory($idx)"></image>
         </div>
       </div>
     </scroll>
@@ -77,19 +78,19 @@ export default {
       }
     })
     storage.get({
-      key: 'phoneNum',
+      key: "phoneNum",
       default: "",
       success: (res) => {
-        if(res){
+        if (res) {
           console.log("phoneNum: " + res.data)
           this.phoneNum = res.data
-        }else{
+        } else {
           prompt.showToast({message: "请先绑定手机号"})
         }
       },
-      fail:()=>{},
-    });
-    this.loadHistoryData();
+      fail: () => {}
+    })
+    this.loadHistoryData()
   },
   updateTime() {
     this.currentTime = updateTime()
@@ -103,12 +104,18 @@ export default {
       })
     } else {
       //如果输入框不为空
-      this.addHistoryData();
+      this.addHistoryData()
       router.replace({
         uri: "pages/loadExpress",
         params: {num: this.CurrentNum, phone: "17723641985"} //将当前输入的运单号传递给detail页面
       })
     }
+  },
+  queryByHistory(num) {
+    router.replace({
+        uri: "pages/loadExpress",
+        params: {num: num, phone: "17723641985"} //将当前输入的运单号传递给detail页面
+      })
   },
   deleteCurrentNum() {
     this.CurrentNum = this.CurrentNum.slice(0, -1)
@@ -123,32 +130,32 @@ export default {
   },
   loadHistoryData() {
     storage.get({
-      key: 'historyData',
+      key: "historyData",
       success: (data) => {
-        if(data){
-          this.historyData = JSON.parse(data);
-          console.log(this.historyData);
+        if (data) {
+          this.historyData = JSON.parse(data)
+          console.log(this.historyData)
         }
       },
       fail: (data, code) => {
-        console.log(`handling fail, errMsg = ${data}`);
+        console.log(`handling fail, errMsg = ${data}`)
         prompt.showToast({
-          message: '读取历史查询记录失败'+data+code,
+          message: "读取历史查询记录失败" + data + code,
           duration: 1000
         })
       }
-    });
+    })
   },
   saveHistoryData() {
     storage.set({
-      key: 'historyData',
+      key: "historyData",
       value: JSON.stringify(this.historyData),
       success: () => {
-        console.log('保存成功');
+        console.log("保存成功")
       },
       fail: (data, code) => {
         prompt.showToast({
-          message: '保存历史查询记录失败,'+data+code,
+          message: "保存历史查询记录失败," + data + code,
           duration: 1000
         })
       }
@@ -156,14 +163,19 @@ export default {
   },
   addHistoryData() {
     // 检查是否已经存在相同的运单号
-    if(!this.historyData.some(item => item.num === this.CurrentNum)){
-      this.historyData.unshift({num: this.CurrentNum});
-      this.saveHistoryData();
+    if (!this.historyData.some((item) => item.num === this.CurrentNum)) {
+      this.historyData.unshift({num: this.CurrentNum})
+      this.saveHistoryData()
     }
   },
   deleteHistory(idx) {
-    this.historyData.splice(idx, 1);
-    this.saveHistoryData();
+    this.historyData.splice(idx, 1)
+    this.saveHistoryData()
+  },
+  gotoSettings() {
+    router.replace({
+      uri: "pages/setting"
+    })
   }
 }
 </script>

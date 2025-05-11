@@ -33,7 +33,7 @@
     "designWidth": 466
   },
   "router": {
-    "entry": "pages/about",
+    "entry": "pages/home",
     "pages": {
       "pages/home": {
         "component": "home"

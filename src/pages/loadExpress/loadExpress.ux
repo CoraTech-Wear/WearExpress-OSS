@@ -74,7 +74,7 @@ export default {
 
 .stateText {
   margin-top: 20px;
-  color: red;
+  color: white;
 }
 
 .result {

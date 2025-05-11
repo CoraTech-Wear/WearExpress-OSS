@@ -13,10 +13,9 @@
 </template>
 
 <script>
-import {updateTime} from "../../common/commons"
-import {ExpressInfo} from "../../ExpressKit/express"
-import storage from "@system.storage"
-import router from "@system.router"
+import {updateTime} from "../../common/commons";
+import router from "@system.router";
+import { ExpressInfo } from "../../ExpressKit/express";
 export default {
   private: {
     text: "欢迎打开详情页",
