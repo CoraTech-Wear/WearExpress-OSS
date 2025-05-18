@@ -77,19 +77,7 @@ export default {
         this.screenShape = data.screenShape
       }
     })
-    storage.get({
-      key: "phoneNum",
-      default: "",
-      success: (res) => {
-        if (res) {
-          console.log("phoneNum: " + res.data)
-          this.phoneNum = res.data
-        } else {
-          prompt.showToast({message: "请先绑定手机号"})
-        }
-      },
-      fail: () => {}
-    })
+    this.loadPhoneNum();
     this.loadHistoryData()
   },
   updateTime() {
@@ -144,6 +132,21 @@ export default {
           duration: 1000
         })
       }
+    })
+  },
+  loadPhoneNum() {
+    storage.get({
+      key: "phoneNum",
+      default: "",
+      success: (res) => {
+        if (res) {
+          this.phoneNum = JSON.parse(res)
+          console.log("phoneNum: " + this.phoneNum)
+        } else {
+          prompt.showToast({message: "请先绑定手机号"})
+        }
+      },
+      fail: () => {}
     })
   },
   saveHistoryData() {
