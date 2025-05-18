@@ -55,6 +55,9 @@
       },
       "pages/setting": {
         "component": "setting"
+      },
+      "pages/bindPhoneNum": {
+        "component": "bindPhoneNum"
       }
     }
   }

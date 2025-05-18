@@ -6,10 +6,10 @@
         <text class="titleText">设置</text>
     </div>
     <scroll class="scroll" scroll-y="true" bounces="true">
-      <div class="btn" @click="toPage('bindMobileNum')">
+      <div class="btn" @click="toPage('bindPhoneNum')">
         <text class="btnText">绑定手机号</text>
       </div>
-      <div class="btn"  @click="toPage('about')">
+      <div class="btn" @click="toPage('about')">
         <text class="btnText">关于</text>
       </div>
 
@@ -35,12 +35,10 @@ export default {
     this.currentTime = updateTime()
   },
   returnHome() {
-    router.replace({
-      uri: "pages/home"
-    }) 
+    router.back({uri: 'pages/home'})
   },
   toPage(page) {
-    router.replace({
+    router.push({
       uri: `pages/${page}`
     })
   }
