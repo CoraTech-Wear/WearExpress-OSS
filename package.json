@@ -47,5 +47,8 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
     "ux-types": "^0.1.1"
+  },
+  "dependencies": {
+    "@aiot-toolkit/jsc": "^1.0.7"
   }
 }

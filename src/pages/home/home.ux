@@ -1,10 +1,10 @@
 <import name="input-method" src="../../components/InputMethod/InputMethod.ux"></import>
 <template>
-  <div id="Home">
+  <div id="Home" @swipe="gotoSettings">
     <image src="../../common/Images/Home/background.png" class="bgImage"></image>
     <div class="TitleBar">
       <text class="time">{{ currentTime }}</text>
-      <text class="titleText" @click="gotoSettings">WearExpress</text>
+      <text class="titleText">WearExpress</text>
     </div>
     <scroll class="Content" scroll-y="true" bounces="true">
       <div class="Query">
@@ -55,6 +55,7 @@ import device from "@system.device"
 import storage from "@system.storage"
 import prompt from "@system.prompt"
 import {QueryHistory} from "../../ExpressKit/express"
+import app from "@system.app";
 
 export default {
   private: {
@@ -113,9 +114,9 @@ export default {
   },
   queryByHistory(num) {
     router.replace({
-        uri: "pages/loadExpress",
-        params: {num: num, phone: "17723641985"} //将当前输入的运单号传递给detail页面
-      })
+      uri: "pages/loadExpress",
+      params: {num: num, phone: "17723641985"} //将当前输入的运单号传递给detail页面
+    })
   },
   deleteCurrentNum() {
     this.CurrentNum = this.CurrentNum.slice(0, -1)
@@ -131,6 +132,7 @@ export default {
   loadHistoryData() {
     storage.get({
       key: "historyData",
+      default: "[]",
       success: (data) => {
         if (data) {
           this.historyData = JSON.parse(data)
@@ -172,10 +174,15 @@ export default {
     this.historyData.splice(idx, 1)
     this.saveHistoryData()
   },
-  gotoSettings() {
-    router.replace({
-      uri: "pages/setting"
-    })
+  gotoSettings(e) {
+    if (e.direction == "left") {
+      router.replace({
+        uri: "pages/setting"
+      })
+    }
+    if (e.direction == "right") {
+      app.terminate()
+    }
   }
 }
 </script>

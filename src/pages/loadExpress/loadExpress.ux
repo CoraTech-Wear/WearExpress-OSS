@@ -1,5 +1,5 @@
 <template>
-  <div class="loading">
+  <div class="loading" @swipe="returnHome">
     <!-- 点击跳转详情页 -->
     <text class="stateText">{{ stateText }}</text>
   </div>
@@ -53,6 +53,13 @@ export default {
     } finally {
       this.loading = false;
 
+    }
+  },
+  returnHome(e) {
+    if(e.direction=='right'){
+      router.replace({
+        uri: "pages/home"
+      })
     }
   }
 }
