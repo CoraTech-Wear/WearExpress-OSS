@@ -9,3 +9,5 @@
 ./src/ExpressKit/example.json
 src/ExpressKit/example.json
 src/ExpressKit/config.js
+
+package-lock.json

@@ -1,0 +1,54 @@
+<template>
+    <div style="
+      background-color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    ">
+        <image src="./startup.png" style="top: 50%"></image>
+        <text style="color: white">{{ stateText }}</text>
+    </div>
+</template>
+
+<script>
+import {asyncFile} from "../../ts/file"
+import prompt from "@system.prompt"
+export default {
+  private: {
+    stateText: "正在加载"
+  },
+  onInit() {
+    this.loadConfig()
+  },
+  async loadConfig() {
+    try {
+      const fileExists = await asyncFile.access({
+        uri: "internal://files/config.txt"
+      })
+      if (!fileExists) {
+        this.stateText = "未检测到配置文件, 创建中"
+        //this.initConfig()
+      }
+    } catch (error) {
+      this.stateText = "未检测到配置文件, 创建中";
+      //this.initConfig()
+    }
+  },
+  async initConfig() {
+    try {
+      await asyncFile.writeText({
+        uri: "internal://files/config.txt",
+        data: JSON.stringify({
+            phoneNum: "",
+            history: []
+        })
+      })
+    } catch (error) {
+      this.stateText = "创建配置文件失败"
+    }
+  }
+}
+</script>
+
+<style></style>

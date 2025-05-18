@@ -29,6 +29,9 @@
     },
     {
       "name": "system.app"
+    },
+    {
+      "name": "system.file"
     }
   ],
   "config": {
@@ -36,8 +39,11 @@
     "designWidth": 466
   },
   "router": {
-    "entry": "pages/home",
+    "entry": "pages/startup",
     "pages": {
+      "pages/startup": {
+        "component": "startup"
+      },
       "pages/home": {
         "component": "home"
       },
