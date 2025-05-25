@@ -35,7 +35,7 @@ export default {
     this.currentTime = updateTime()
   },
   returnHome() {
-    router.back({uri: 'pages/home'})
+    router.push({uri: 'pages/home'})
   },
   toPage(page) {
     router.push({

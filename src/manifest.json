@@ -45,7 +45,8 @@
         "component": "startup"
       },
       "pages/home": {
-        "component": "home"
+        "component": "home",
+        "launchMode": "singleTask"
       },
       "pages/debug": {
         "component": "index"

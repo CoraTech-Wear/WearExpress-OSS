@@ -1,7 +1,7 @@
 import fetch from "@system.fetch";
 import config from "./config";
 import prompt from "@system.prompt";
-import stateref from './refs';
+import refs from './refs';
 import storage from '@system.storage';
 
 export async function getExpressInfo({
@@ -69,7 +69,7 @@ export class ExpressInfo{
         this.data = data;
     };
     getExpressComName(){
-        return stateref.expressCom[this.data.com];
+        return refs.expressCom[this.data.com];
     };
     isExpressChecked(){
         return this.data.isCheck === "1";
@@ -78,7 +78,7 @@ export class ExpressInfo{
         return this.data.nu;
     };
     getExpressState(){
-        return stateref.expressState[this.data.state];
+        return refs.expressState[this.data.state];
     };
     getLogisticsTracking(){
         return this.data.data;

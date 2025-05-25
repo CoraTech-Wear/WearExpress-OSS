@@ -14,6 +14,7 @@
         <text class="btnText">确定</text>
         <image src="Forward.png" style="position: absolute;right: 22px;"></image>
       </div>
+      <text style="height: 50px;">应用将重启以应用更改</text>
     </div>
     <text if="{{!keyboardHide}}" style="
         position: absolute;
@@ -41,7 +42,7 @@
 import {updateTime} from "../../common/commons";
 import router from "@system.router";
 import device from "@system.device";
-import storage from "@system.storage";
+import storage from "../../common/storage";
 import prompt from "@system.prompt";
 
 export default {
@@ -62,22 +63,37 @@ export default {
         this.screenShape = data.screenShape
       }
     })
+    storage.get({
+      key: "phoneNum",
+      default: "",
+      success: (data) => {
+        this.phoneNum = data
+      } 
+    })
   },
   updateTime() {
     this.currentTime = updateTime()
   },
   savePhoneNum() {
-    if(this.phoneNum.length === 0) return
+    if(this.phoneNum.length === 0){
+      prompt.showToast({
+        message: "请输入手机号",
+        duration: 3000
+      })
+      return
+    }
     storage.set({
       key: "phoneNum",
-      value: JSON.stringify(this.phoneNum),
+      value: this.phoneNum,
       success: () => {
         console.log("保存成功");
         prompt.showToast({
           message: "保存成功",
           duration: 500
         });
-        setTimeout(()=> {this.back()}, 500)
+        setTimeout(()=> {router.replace({
+          uri: 'pages/startup'
+        })}, 500)
       },
       fail: (data, code) => {
         prompt.showToast({
@@ -98,8 +114,12 @@ export default {
   showHideKeyboard() {
     this.keyboardHide = !this.keyboardHide
   },
-  back() {
-    router.back({uri: '/pages/setting'})
+  back(e) {
+    if(e.direction=='right'){
+      router.replace({
+        uri: "pages/home"
+      })
+    }
   }
 }
 </script>

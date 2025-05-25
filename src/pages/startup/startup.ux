@@ -1,19 +1,22 @@
 <template>
-    <div style="
+  <div style="
       background-color: black;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     ">
-        <image src="./startup.png" style="top: 50%"></image>
-        <text style="color: white">{{ stateText }}</text>
-    </div>
+    <image src="./startup.png" style="top: 50%"></image>
+    <text style="color: white">{{ stateText }}</text>
+  </div>
 </template>
 
 <script>
-import {asyncFile} from "../../ts/file"
-import prompt from "@system.prompt"
+// import {asyncFile} from "../../ts/file"
+import storage from '../../common/storage';
+import prompt from "@system.prompt";
+import router from "@system.router";
+import file from "@system.file"
 export default {
   private: {
     stateText: "正在加载"
@@ -21,32 +24,30 @@ export default {
   onInit() {
     this.loadConfig()
   },
-  async loadConfig() {
-    try {
-      const fileExists = await asyncFile.access({
-        uri: "internal://files/config.txt"
-      })
-      if (!fileExists) {
-        this.stateText = "未检测到配置文件, 创建中"
-        //this.initConfig()
+  loadConfig() {
+    storage.get({
+      key: "phoneNum",
+      default: "",
+      success: (data) => {
+        const phoneNum = data;
+        if (data === "") {
+          this.stateText = "请先绑定手机号";
+           router.replace({
+            uri: 'pages/bindPhoneNum'
+           })
+        }else{
+          storage.get({
+            key: "history",
+            default: "[]", 
+            success: (data) => {
+                router.push({
+                  uri: 'pages/home'
+                })
+            }
+          })
+        }
       }
-    } catch (error) {
-      this.stateText = "未检测到配置文件, 创建中";
-      //this.initConfig()
-    }
-  },
-  async initConfig() {
-    try {
-      await asyncFile.writeText({
-        uri: "internal://files/config.txt",
-        data: JSON.stringify({
-            phoneNum: "",
-            history: []
-        })
-      })
-    } catch (error) {
-      this.stateText = "创建配置文件失败"
-    }
+    })
   }
 }
 </script>

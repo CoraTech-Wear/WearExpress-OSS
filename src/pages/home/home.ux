@@ -52,7 +52,7 @@
 import {updateTime} from "../../common/commons"
 import router from "@system.router"
 import device from "@system.device"
-import storage from "@system.storage"
+import storage from "../../common/storage"
 import prompt from "@system.prompt"
 import {QueryHistory} from "../../ExpressKit/express"
 import app from "@system.app";
@@ -62,7 +62,7 @@ export default {
     currentTime: "",
     queryHistory: new QueryHistory(),
     historyData: [],
-    CurrentNum: "SF1982953801429", //当前输入的运单号
+    CurrentNum: "", //当前输入的运单号
     keyboardHide: true,
     screenShape: "rect",
     phoneNum: ""
@@ -96,7 +96,7 @@ export default {
       this.addHistoryData()
       router.replace({
         uri: "pages/loadExpress",
-        params: {num: this.CurrentNum, phone: "17723641985"} //将当前输入的运单号传递给detail页面
+        params: {num: this.CurrentNum, phone: this.phoneNum} //将当前输入的运单号传递给detail页面
       })
     }
   },

@@ -1,54 +1,69 @@
 <template>
   <div class="Detail" @swipe="returnHome">
-    <image src="/common/Images/Detail/{{ bgImage }}.png" style="position: absolute;top: 0;left: 0;"></image>
+    <image src="/common/Images/Detail/{{ bgImage }}.png" style="position: absolute; top: 0; left: 0"></image>
     <div class="TitleBar">
       <text class="time">{{ currentTime }}</text>
       <text class="titleText">物流详情</text>
     </div>
-    <scroll class="Content" scroll-y="true" bounces="true">
-      <text >{{ com }}</text>
-      <text>{{ state }}</text>
+    <scroll class="DetailContent" scroll-y="true" bounces="true">
+      <text class="StateText">{{ currentState }}</text>
+      <div class="info">
+        <image src="../../common//Images/Detail/info.png"></image>
+        <text class="comText">承运:{{ com }}</text>
+        <text class="numText">{{ num }}</text>
+      </div>
+      <div class="trackInfoContainer">
+        <div class="trackingInfo" for="{{ value in result_.data }}">
+          <text class="trackTime">{{ value.time }}</text>
+          <text class="trackContent">{{ value.context }}</text>
+        </div>
+      </div>
     </scroll>
   </div>
 </template>
 
 <script>
-import {updateTime} from "../../common/commons";
-import router from "@system.router";
-import { ExpressInfo } from "../../ExpressKit/express";
+import {updateTime} from "../../common/commons"
+import router from "@system.router"
+import {ExpressInfo} from "../../ExpressKit/express"
 export default {
   private: {
     text: "欢迎打开详情页",
     bgImage: "bg.unchecked",
     com: "",
-    state: "",
+    num: "",
     result_: undefined,
     currentTime: "",
     trackingInfo: [],
     phone: "",
-    loading: true
+    loading: true,
+    currentState: ""
   },
   protected: {
-    result: undefined,
+    result: undefined
   },
   onInit() {
     this.updateTime()
     setInterval(() => {
       this.updateTime()
     })
-    this.result_ = JSON.parse(this.result);
-    if(this.result_.ischeck){
+    this.result_ = JSON.parse(this.result)
+    if (this.result_.ischeck) {
       this.changeBgImage()
     }
+    const expressInfo = new ExpressInfo(this.result_)
+    this.currentState = expressInfo.getExpressState()
+    this.com = expressInfo.getExpressComName()
+    this.num = expressInfo.getExpressNum()
   },
   updateTime() {
     this.currentTime = updateTime()
   },
   changeBgImage() {
-    this.bgImage = this.bgImage === "bg.unchecked"? "bg.checked" : "bg.unchecked"
+    this.bgImage = this.bgImage === "bg.unchecked" ? "bg.checked" : "bg.unchecked"
   },
   returnHome(e) {
-    if(e.direction=='right'){
+    if (e.direction == "right") {
       router.replace({
         uri: "pages/home"
       })
