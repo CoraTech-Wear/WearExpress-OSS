@@ -13,7 +13,7 @@
         <text class="numText">{{ num }}</text>
       </div>
       <div class="trackInfoContainer">
-        <div class="trackingInfo" for="{{ value in result_.data }}">
+        <div class="trackingInfo" for="{{ value in result_.data.slice(0,5) }}">
           <text class="trackTime">{{ value.time }}</text>
           <text class="trackContent">{{ value.context }}</text>
         </div>
