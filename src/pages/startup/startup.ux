@@ -1,11 +1,13 @@
 <template>
-  <div style="
+  <div
+    style="
       background-color: black;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-    ">
+    "
+  >
     <image src="./startup.png" style="top: 50%"></image>
     <text style="color: white">{{ stateText }}</text>
   </div>
@@ -13,9 +15,9 @@
 
 <script>
 // import {asyncFile} from "../../ts/file"
-import storage from '../../common/storage';
-import prompt from "@system.prompt";
-import router from "@system.router";
+import storage from "../../common/storage"
+import prompt from "@system.prompt"
+import router from "@system.router"
 import file from "@system.file"
 export default {
   private: {
@@ -29,20 +31,33 @@ export default {
       key: "phoneNum",
       default: "",
       success: (data) => {
-        const phoneNum = data;
+        const phoneNum = data
         if (data === "") {
-          this.stateText = "请先绑定手机号";
-           router.replace({
-            uri: 'pages/bindPhoneNum'
-           })
-        }else{
+          this.stateText = "请先绑定手机号"
+          router.replace({
+            uri: "pages/bindPhoneNum"
+          })
+        } else {
           storage.get({
-            key: "history",
-            default: "[]", 
+            key: "APIConfig",
+            default: "",
             success: (data) => {
-                router.push({
-                  uri: 'pages/home'
+              if (data === "") {
+                this.stateText = "请先设置API"
+                router.replace({
+                  uri: "pages/bindAPICustomer"
                 })
+              } else {
+                storage.get({
+                  key: "history",
+                  default: "[]",
+                  success: (data) => {
+                    router.push({
+                      uri: "pages/home"
+                    })
+                  }
+                })
+              }
             }
           })
         }
