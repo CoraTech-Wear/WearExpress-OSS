@@ -5,20 +5,26 @@
       <text class="time">{{ currentTime }}</text>
       <text class="titleText">物流详情</text>
     </div>
-    <scroll class="DetailContent" scroll-y="true" bounces="true">
-      <text class="StateText">{{ currentState }}</text>
-      <div class="info">
-        <image src="../../common//Images/Detail/info.png"></image>
-        <text class="comText">承运:{{ com }}</text>
-        <text class="numText">{{ num }}</text>
-      </div>
-      <div class="trackInfoContainer">
-        <div class="trackingInfo" for="{{ value in result_.data.slice(0,5) }}">
-          <text class="trackTime">{{ value.time }}</text>
-          <text class="trackContent">{{ value.context }}</text>
+    <div class="DetailContent" style="top: 97px">
+      <scroll class="DetailContent" scroll-y="true" bounces="true">
+        <div class="Detaildiv">
+          <text class="StateText">{{ currentState }}</text>
+          <text if="{{!isChecked}}" class="remainTime">
+            预计{{ remainTime }}后到达
+          </text>
+          <div class="info">
+            <text class="comText">承运:{{ com }}</text>
+            <text class="numText">{{ num }}</text>
+          </div>
+          <div class="trackInfoContainer">
+            <div class="trackingInfo" for="{{ value in result_.data.slice(0,10) }}">
+              <text class="trackTime">{{ value.time }}</text>
+              <text class="trackContent">{{ value.context }}</text>
+            </div>
+          </div>
         </div>
-      </div>
-    </scroll>
+      </scroll>
+    </div>
   </div>
 </template>
 
@@ -37,7 +43,9 @@ export default {
     trackingInfo: [],
     phone: "",
     loading: true,
-    currentState: ""
+    currentState: "",
+    remainTime: "",
+    isChecked: false
   },
   protected: {
     result: undefined
@@ -46,15 +54,17 @@ export default {
     this.updateTime()
     setInterval(() => {
       this.updateTime()
-    })
+    }, 10000)
     this.result_ = JSON.parse(this.result)
-    if (this.result_.ischeck) {
+    if (this.result_.ischeck=="1") {
       this.changeBgImage()
+      this.isChecked = true
     }
     const expressInfo = new ExpressInfo(this.result_)
     this.currentState = expressInfo.getExpressState()
     this.com = expressInfo.getExpressComName()
     this.num = expressInfo.getExpressNum()
+    this.remainTime = this.result_.remainTime
   },
   updateTime() {
     this.currentTime = updateTime()

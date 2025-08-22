@@ -32,6 +32,9 @@
     },
     {
       "name": "system.file"
+    },
+    {
+      "name": "system.crypto"
     }
   ],
   "config": {
@@ -64,6 +67,9 @@
         "component": "setting"
       },
       "pages/bindPhoneNum": {
+        "component": "bindPhoneNum"
+      },
+      "pages/bindAPICustomer": {
         "component": "bindPhoneNum"
       }
     }

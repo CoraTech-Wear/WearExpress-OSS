@@ -9,6 +9,10 @@
       <div class="btn" @click="toPage('bindPhoneNum')">
         <text class="btnText">绑定手机号</text>
       </div>
+      <div class="btn" @click="toPage('bindAPICustomer')">
+        <text class="btnText">API配置</text>
+      </div>
+
       <div class="btn" @click="toPage('about')">
         <text class="btnText">关于</text>
       </div>

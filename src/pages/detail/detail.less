@@ -3,7 +3,17 @@
 }
 
 .StateText {
-    font-size: 50px;
+    font-size: 60px;
+    width: 397px;
+    color: white;
+    font-weight: 600;
+}
+
+.remainTime {
+    color: #FFF;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 450;
     width: 397px;
 }
 
@@ -13,16 +23,30 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    top: 97px;
+    top: 0px;
     left: 0px;
     width: 466px;
-    scroll-top: 0px;
     bottom: 0;
+}
+
+.Detaildiv {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+    width: 466px;
+    height: auto;
+    padding-bottom: 40px
 }
 
 .info {
     width: 397px;
-    height: 127px;
+    height: 122px;
+    background-color: #00000060;
+    border-radius: 20;
 }
 
 .comText {
@@ -50,40 +74,38 @@
 }
 
 .trackInfoContainer {
-    top: 10px;
     display: flex;
     width: 397px;
     flex-direction: column;
-    align-items: center;
+    padding: 0px;
 }
 
 .trackingInfo {
-    position: relative;
-    top: 10px;
+    margin-top: 20px;
     width: 397px;
+    /* 自动布局 */
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    border-radius: 20px;
-    background: rgb(30, 30, 30);
+    padding: 0px;
 }
 
 .trackTime {
-    color: #8C8C8C;
-    font-family: MiSans;
     font-size: 25px;
-    font-style: normal;
-    font-weight: 520;
+    font-weight: normal;
     line-height: normal;
+    display: flex;
+    align-items: center;
+    letter-spacing: normal;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .trackContent {
-    width: 348px;
-    color: #FFF;
-    font-family: MiSans;
     font-size: 25px;
-    font-style: normal;
-    font-weight: 520;
+    font-weight: normal;
     line-height: normal;
+    display: flex;
+    align-items: center;
+    letter-spacing: normal;
+    color: #FFFFFF;
+    font-weight: 600;
 }

@@ -36,15 +36,23 @@ export default {
   getExpress: async function() {
     this.loading = true;
     try {
+      const n = this.num.split(" ")[0];
+      const c = this.num.split(" ")[1];
+
       const result = await getExpressInfo({
-          num: this.num,
+          num: n,
+          com: c,
           phone: this.phone
       });
       this.result = JSON.stringify(result);
-      router.replace({
+      if( result.result == false ){
+        this.stateText = "获取快递信息失败."+result.returnCode+result.message+"\n请检查快递单号是否正确";
+      }else {
+        router.replace({
         uri: "pages/detail",
         params: { result: this.result } // 将result作为参数传递给detail页面 
       })
+      }
     } catch (error) {
         prompt.showToast({
             message: `获取快递信息失败：${error.message}`
